@@ -1,0 +1,27 @@
+{
+  "Comment": "Medallion SCD pipeline - Bronze -> Silver -> Gold orchestration",
+  "StartAt": "BronzeIngestion",
+  "States": {
+    "BronzeIngestion": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": { "JobName": "medallion-bronze-ingestion" },
+      "Retry": [ { "ErrorEquals": ["States.ALL"], "IntervalSeconds": 60, "MaxAttempts": 2, "BackoffRate": 2.0 } ],
+      "Next": "SilverTransform"
+    },
+    "SilverTransform": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": { "JobName": "medallion-silver-transform" },
+      "Retry": [ { "ErrorEquals": ["States.ALL"], "IntervalSeconds": 60, "MaxAttempts": 1, "BackoffRate": 2.0 } ],
+      "Next": "GoldAggregations"
+    },
+    "GoldAggregations": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": { "JobName": "medallion-gold-aggregations" },
+      "Retry": [ { "ErrorEquals": ["States.ALL"], "IntervalSeconds": 60, "MaxAttempts": 1, "BackoffRate": 2.0 } ],
+      "End": true
+    }
+  }
+}
