@@ -38,7 +38,7 @@ instead of a single "last write wins" snapshot.
 
 ## Architecture
 
-![Architecture diagram: S3 raw data flows through Bronze, Silver and Gold AWS Glue Jobs into Apache Iceberg tables on S3, orchestrated by AWS Step Functions, cataloged and governed by AWS Glue Data Catalog and Lake Formation, and queried through Amazon Athena](docs/architecture.svg)
+![Architecture diagram: S3 raw data flows through Bronze, Silver and Gold AWS Glue Jobs into Apache Iceberg tables on S3, orchestrated by AWS Step Functions, cataloged and governed by AWS Glue Data Catalog and Lake Formation, and queried through Amazon Athena](docs/architecture.png)
 
 ### AWS services used
 
